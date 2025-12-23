@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist Generator - Discover & Export to YouTube Music</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Music Playlist Generator</h1>
+            <p class="subtitle">Discover music based on artists and songs you love</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Search Section -->
+            <section class="search-section">
+                <h2>Discover Music</h2>
+                <div class="search-controls">
+                    <div class="search-type-tabs">
+                        <button class="tab-btn active" data-type="artist">Artist</button>
+                        <button class="tab-btn" data-type="track">Song</button>
+                    </div>
+                    <div class="search-input-group">
+                        <input type="text" id="searchInput" placeholder="Search for an artist or song..." />
+                        <button id="searchBtn">Search</button>
+                    </div>
+                </div>
+
+                <div id="searchResults" class="results-container"></div>
+            </section>
+
+            <!-- Recommendations Section -->
+            <section class="recommendations-section">
+                <h2>Recommendations</h2>
+                <div id="recommendations" class="recommendations-container"></div>
+            </section>
+
+            <!-- Playlists Section -->
+            <section class="playlists-section">
+                <div class="playlists-header">
+                    <h2>My Playlists</h2>
+                    <button id="createPlaylistBtn" class="btn-primary">+ New Playlist</button>
+                </div>
+                <div id="playlistsContainer" class="playlists-container"></div>
+            </section>
+
+            <!-- Current Playlist Section -->
+            <section class="current-playlist-section" id="currentPlaylistSection" style="display: none;">
+                <div class="playlist-header">
+                    <h2 id="currentPlaylistName">Current Playlist</h2>
+                    <div class="playlist-actions">
+                        <button id="exportPlaylistBtn" class="btn-secondary">Export to CSV</button>
+                        <button id="closePlaylistBtn" class="btn-secondary">Close</button>
+                    </div>
+                </div>
+                <div id="currentPlaylistTracks" class="playlist-tracks"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal for creating playlist -->
+    <div id="playlistModal" class="modal">
+        <div class="modal-content">
+            <h3>Create New Playlist</h3>
+            <input type="text" id="playlistNameInput" placeholder="Enter playlist name..." />
+            <div class="modal-actions">
+                <button id="savePlaylistBtn" class="btn-primary">Create</button>
+                <button id="cancelPlaylistBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="spinner" style="display: none;">
+        <div class="spinner-ring"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
