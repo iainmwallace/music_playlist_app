@@ -3,7 +3,7 @@
 class MusicApp {
     constructor() {
         // Last.fm API configuration (free tier, no auth needed for basic queries)
-        this.API_KEY = 'YOUR_LASTFM_API_KEY'; // Users need to get their own free API key
+        this.API_KEY = '9ee868e9b11dde3dfd8152a77f41fad2'; // Last.fm API key
         this.API_URL = 'https://ws.audioscrobbler.com/2.0/';
 
         this.searchType = 'artist';
