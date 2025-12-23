@@ -99,17 +99,21 @@ class MusicApp {
 
         container.innerHTML = results.map(item => {
             if (type === 'artist') {
+                const listeners = item.listeners ? this.formatNumber(item.listeners) : null;
                 return `
                     <div class="result-card" onclick="app.getArtistRecommendations('${this.escapeHtml(item.name)}')">
                         <h4>${this.escapeHtml(item.name)}</h4>
-                        <p>Artist</p>
+                        <p class="card-type">Artist</p>
+                        ${listeners ? `<p class="card-stats">👥 ${listeners} listeners</p>` : ''}
                     </div>
                 `;
             } else {
+                const listeners = item.listeners ? this.formatNumber(item.listeners) : null;
                 return `
                     <div class="result-card">
                         <h4>${this.escapeHtml(item.name)}</h4>
-                        <p>${this.escapeHtml(item.artist || 'Unknown Artist')}</p>
+                        <p class="card-artist">${this.escapeHtml(item.artist || 'Unknown Artist')}</p>
+                        ${listeners ? `<p class="card-stats">👥 ${listeners} listeners</p>` : ''}
                         <div class="track-actions">
                             <button class="btn-primary btn-small" onclick="app.getTrackRecommendations('${this.escapeHtml(item.name)}', '${this.escapeHtml(item.artist)}')">Similar</button>
                             <button class="btn-secondary btn-small" onclick="app.addTrackToPlaylist({name: '${this.escapeHtml(item.name)}', artist: '${this.escapeHtml(item.artist)}'})">Add +</button>
@@ -179,10 +183,22 @@ class MusicApp {
                 const trackName = item.name;
                 const artistName = item.artist?.name || item.artist || 'Unknown Artist';
 
+                // Get similarity match score (0-1 scale from Last.fm)
+                const matchScore = item.match ? Math.round(parseFloat(item.match) * 100) : null;
+
+                // Get play count or listeners
+                const playCount = item.playcount ? this.formatNumber(item.playcount) : null;
+                const listeners = item.listeners ? this.formatNumber(item.listeners) : null;
+
                 return `
-                    <div class="recommendation-card">
+                    <div class="recommendation-card ${matchScore ? 'has-match' : ''}">
+                        ${matchScore ? `<div class="match-score">${matchScore}% match</div>` : ''}
                         <h4>${this.escapeHtml(trackName)}</h4>
-                        <p>${this.escapeHtml(artistName)}</p>
+                        <p class="card-artist">${this.escapeHtml(artistName)}</p>
+                        <div class="card-metadata">
+                            ${playCount ? `<span class="metadata-item">▶️ ${playCount} plays</span>` : ''}
+                            ${listeners ? `<span class="metadata-item">👥 ${listeners} listeners</span>` : ''}
+                        </div>
                         ${isTrack ? `
                             <div class="track-actions">
                                 <button class="btn-primary btn-small" onclick="app.addTrackToPlaylist({name: '${this.escapeHtml(trackName)}', artist: '${this.escapeHtml(artistName)}'})">Add to Playlist</button>
@@ -421,6 +437,16 @@ class MusicApp {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    formatNumber(num) {
+        const number = parseInt(num);
+        if (number >= 1000000) {
+            return (number / 1000000).toFixed(1) + 'M';
+        } else if (number >= 1000) {
+            return (number / 1000).toFixed(1) + 'K';
+        }
+        return number.toString();
     }
 }
 
